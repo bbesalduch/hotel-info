@@ -1,0 +1,17 @@
+{
+  "name": "hotel-info-display",
+  "version": "1.0.0",
+  "description": "Digital signage system for Hotel Can Quetglas",
+  "main": "server/app.js",
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "node server/app.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "better-sqlite3": "^9.4.3",
+    "cors": "^2.8.5"
+  },
+  "author": "Hotel Can Quetglas",
+  "license": "MIT"
+}

@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hotel Can Quetglas</title>
+  <link href="https://fonts.cdnfonts.com/css/coco-gothic" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --cream: #FAF8F5;
+      --warm-white: #FFFFFF;
+      --sand: #F0EBE3;
+      --gold: #B8956B;
+      --gold-light: #D4C4A8;
+      --charcoal: #2C2C2C;
+      --gray: #6B6B6B;
+      --gray-light: #A0A0A0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Coco Gothic', sans-serif;
+      background: var(--cream);
+      color: var(--charcoal);
+    }
+
+    .container {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      padding: 40px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 50px;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 400;
+      letter-spacing: 4px;
+      color: var(--charcoal);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .lang-pills {
+      display: flex;
+      gap: 8px;
+    }
+
+    .lang-pill {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sand);
+      transition: all 0.4s ease;
+    }
+
+    .lang-pill.active {
+      background: var(--gold);
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    .datetime {
+      text-align: right;
+    }
+
+    .time {
+      font-size: 42px;
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: var(--charcoal);
+    }
+
+    .date {
+      font-size: 12px;
+      color: var(--gray);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 80px;
+      position: relative;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .slide-inner {
+      text-align: center;
+      max-width: 1000px;
+    }
+
+    /* Welcome */
+    .welcome-label {
+      font-size: 11px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 30px;
+    }
+
+    .welcome-title {
+      font-size: 56px;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: var(--charcoal);
+      line-height: 1.3;
+      margin-bottom: 50px;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold);
+      margin: 0 auto 50px;
+    }
+
+    .wifi-box {
+      display: inline-flex;
+      gap: 60px;
+      padding: 30px 50px;
+      border: 1px solid var(--sand);
+      background: var(--warm-white);
+    }
+
+    .wifi-item {
+      text-align: center;
+    }
+
+    .wifi-label {
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gray-light);
+      margin-bottom: 8px;
+    }
+
+    .wifi-value {
+      font-size: 18px;
+      letter-spacing: 2px;
+      color: var(--charcoal);
+    }
+
+    /* Section header */
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 42px;
+      font-weight: 300;
+      letter-spacing: 3px;
+      color: var(--charcoal);
+      margin-bottom: 60px;
+    }
+
+    /* Schedule grid */
+    .schedule-grid {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .schedule-card {
+      width: 200px;
+      padding: 40px 30px;
+      background: var(--warm-white);
+      border: 1px solid var(--sand);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .schedule-icon {
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    .schedule-name {
+      font-size: 16px;
+      letter-spacing: 2px;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+
+    .schedule-time {
+      font-size: 14px;
+      color: var(--gold);
+      letter-spacing: 1px;
+    }
+
+    /* Services grid */
+    .services-grid {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+    }
+
+    .service-card {
+      width: 220px;
+      text-align: center;
+    }
+
+    .service-icon {
+      width: 60px;
+      height: 60px;
+      border: 1px solid var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin: 0 auto 20px;
+    }
+
+    .service-name {
+      font-size: 16px;
+      letter-spacing: 2px;
+      color: var(--charcoal);
+      margin-bottom: 10px;
+    }
+
+    .service-desc {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.6;
+      letter-spacing: 0.5px;
+    }
+
+    /* Weather */
+    .weather-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 80px;
+    }
+
+    .weather-main {
+      text-align: center;
+    }
+
+    .weather-icon {
+      font-size: 70px;
+      margin-bottom: 15px;
+    }
+
+    .weather-temp {
+      font-size: 90px;
+      font-weight: 300;
+      color: var(--charcoal);
+      line-height: 1;
+    }
+
+    .weather-temp span {
+      font-size: 30px;
+      vertical-align: super;
+    }
+
+    .weather-desc {
+      font-size: 14px;
+      color: var(--gold);
+      letter-spacing: 2px;
+      text-transform: capitalize;
+      margin-top: 10px;
+    }
+
+    .weather-location {
+      font-size: 11px;
+      color: var(--gray-light);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-top: 8px;
+    }
+
+    .weather-details {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .weather-detail {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 25px;
+      background: var(--warm-white);
+      border: 1px solid var(--sand);
+    }
+
+    .weather-detail-icon {
+      font-size: 20px;
+    }
+
+    .weather-detail-label {
+      font-size: 10px;
+      color: var(--gray-light);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .weather-detail-value {
+      font-size: 18px;
+      color: var(--charcoal);
+    }
+
+    /* Footer */
+    .footer {
+      padding: 30px 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .indicators {
+      display: flex;
+      gap: 12px;
+    }
+
+    .indicator {
+      width: 30px;
+      height: 3px;
+      background: var(--sand);
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+
+    .indicator.active {
+      width: 50px;
+      background: var(--gold);
+    }
+
+    .footer-info {
+      display: flex;
+      gap: 40px;
+      font-size: 12px;
+      color: var(--gray);
+      letter-spacing: 2px;
+    }
+
+    /* Animations */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .slide.active .schedule-card,
+    .slide.active .service-card,
+    .slide.active .weather-detail {
+      animation: fadeUp 0.6s ease forwards;
+      opacity: 0;
+    }
+
+    .slide.active .schedule-card:nth-child(1),
+    .slide.active .service-card:nth-child(1) { animation-delay: 0.1s; }
+    .slide.active .schedule-card:nth-child(2),
+    .slide.active .service-card:nth-child(2) { animation-delay: 0.2s; }
+    .slide.active .schedule-card:nth-child(3),
+    .slide.active .service-card:nth-child(3) { animation-delay: 0.3s; }
+    .slide.active .schedule-card:nth-child(4),
+    .slide.active .service-card:nth-child(4) { animation-delay: 0.4s; }
+
+    .slide.active .weather-detail:nth-child(1) { animation-delay: 0.15s; }
+    .slide.active .weather-detail:nth-child(2) { animation-delay: 0.25s; }
+    .slide.active .weather-detail:nth-child(3) { animation-delay: 0.35s; }
+
+    /* Loading */
+    .loading {
+      position: fixed;
+      inset: 0;
+      background: var(--cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      transition: opacity 0.5s ease;
+    }
+
+    .loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader {
+      width: 30px;
+      height: 30px;
+      border: 2px solid var(--sand);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="loading" id="loading"><div class="loader"></div></div>
+
+  <div class="container">
+    <header class="header">
+      <div class="logo">
+        <img src="https://hotelcanquetglas.com/wp-content/uploads/2023/05/logobbm3-1.png" alt="Hotel Can Quetglas" onerror="this.outerHTML='<span class=\'logo-text\'>CAN QUETGLAS</span>'">
+      </div>
+      <div class="header-right">
+        <div class="lang-pills">
+          <div class="lang-pill" data-lang="es"></div>
+          <div class="lang-pill" data-lang="en"></div>
+          <div class="lang-pill" data-lang="de"></div>
+        </div>
+        <div class="datetime">
+          <div class="time" id="clock">00:00</div>
+          <div class="date" id="date"></div>
+        </div>
+      </div>
+    </header>
+
+    <main class="main" id="slides"></main>
+
+    <footer class="footer">
+      <div class="indicators" id="indicators"></div>
+      <div class="footer-info">
+        <span>Palma de Mallorca</span>
+        <span id="phone">+34 871 626 000</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const icons = { 'coffee': '☕', 'log-out': '🚪', 'waves': '🏊', 'concierge-bell': '🛎️', 'wifi': '📶', 'car': '🚗', 'sun': '☀️', 'utensils': '🍽️', 'spa': '💆', 'gym': '💪', 'default': '✦' };
+    const weatherIcons = { '01d': '☀️', '01n': '🌙', '02d': '⛅', '02n': '☁️', '03d': '☁️', '03n': '☁️', '04d': '☁️', '04n': '☁️', '09d': '🌧️', '09n': '🌧️', '10d': '🌦️', '10n': '🌧️', '11d': '⛈️', '11n': '⛈️', '13d': '❄️', '13n': '❄️', '50d': '🌫️', '50n': '🌫️' };
+
+    let data = null, weather = null, currentSlide = 0, currentLang = 'es', langIndex = 0;
+    const languages = ['es', 'en', 'de'];
+
+    const labels = {
+      es: { welcome: 'Bienvenidos', schedule: 'Horarios', services: 'Servicios', weather: 'El Tiempo', wifi: 'WiFi Gratuito', network: 'Red', password: 'Contraseña', humidity: 'Humedad', wind: 'Viento', feelsLike: 'Sensación', boutique: 'Hotel Boutique' },
+      en: { welcome: 'Welcome', schedule: 'Schedule', services: 'Services', weather: 'Weather', wifi: 'Free WiFi', network: 'Network', password: 'Password', humidity: 'Humidity', wind: 'Wind', feelsLike: 'Feels like', boutique: 'Boutique Hotel' },
+      de: { welcome: 'Willkommen', schedule: 'Öffnungszeiten', services: 'Services', weather: 'Wetter', wifi: 'Kostenloses WLAN', network: 'Netzwerk', password: 'Passwort', humidity: 'Feuchtigkeit', wind: 'Wind', feelsLike: 'Gefühlt', boutique: 'Boutique Hotel' }
+    };
+
+    async function init() {
+      await loadData();
+      await loadWeather();
+      render();
+      startClock();
+      setInterval(() => goToSlide((currentSlide + 1) % 4), parseInt(data?.settings?.slide_duration) || 12000);
+      setInterval(() => { langIndex = (langIndex + 1) % 3; changeLang(languages[langIndex]); }, (parseInt(data?.settings?.slide_duration) || 12000) * 4);
+      setInterval(loadData, 300000);
+      setInterval(loadWeather, 1800000);
+      document.getElementById('loading').classList.add('hidden');
+    }
+
+    async function loadData() {
+      try { data = await (await fetch('/api/display')).json(); document.getElementById('phone').textContent = data.settings.hotel_phone || '+34 871 626 000'; } catch (e) {}
+    }
+
+    async function loadWeather() {
+      if (!data?.settings?.weather_api_key) return;
+      try { weather = await (await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${data.settings.weather_lat || '39.5696'}&lon=${data.settings.weather_lon || '2.6502'}&appid=${data.settings.weather_api_key}&units=metric&lang=${currentLang}`)).json(); } catch (e) {}
+    }
+
+    function render() {
+      const container = document.getElementById('slides');
+      const ind = document.getElementById('indicators');
+      container.innerHTML = '';
+      ind.innerHTML = '';
+
+      // Welcome
+      container.innerHTML += `<div class="slide active"><div class="slide-inner">
+        <p class="welcome-label">${labels[currentLang].boutique}</p>
+        <h1 class="welcome-title">${data?.settings?.[`welcome_message_${currentLang}`] || labels[currentLang].welcome}</h1>
+        <div class="divider"></div>
+        <div class="wifi-box">
+          <div class="wifi-item"><p class="wifi-label">${labels[currentLang].network}</p><p class="wifi-value">${data?.settings?.wifi_network || 'Hotel Can Quetglas'}</p></div>
+          <div class="wifi-item"><p class="wifi-label">${labels[currentLang].password}</p><p class="wifi-value">${data?.settings?.wifi_password || '••••••••'}</p></div>
+        </div>
+      </div></div>`;
+
+      // Schedule
+      let scheduleHTML = (data?.schedule || []).map(i => `<div class="schedule-card"><div class="schedule-icon">${icons[i.icon] || icons.default}</div><div class="schedule-name">${i[`name_${currentLang}`] || i.name_es}</div><div class="schedule-time">${i.time_end ? i.time_start + ' – ' + i.time_end : i.time_start}</div></div>`).join('');
+      container.innerHTML += `<div class="slide"><div class="slide-inner"><p class="section-label">Hotel Can Quetglas</p><h2 class="section-title">${labels[currentLang].schedule}</h2><div class="schedule-grid">${scheduleHTML}</div></div></div>`;
+
+      // Services
+      let servicesHTML = (data?.services || []).map(s => `<div class="service-card"><div class="service-icon">${icons[s.icon] || icons.default}</div><div class="service-name">${s[`name_${currentLang}`] || s.name_es}</div><div class="service-desc">${s[`description_${currentLang}`] || s.description_es}</div></div>`).join('');
+      container.innerHTML += `<div class="slide"><div class="slide-inner"><p class="section-label">Hotel Can Quetglas</p><h2 class="section-title">${labels[currentLang].services}</h2><div class="services-grid">${servicesHTML}</div></div></div>`;
+
+      // Weather
+      let weatherHTML = weather?.main ? `<div class="weather-content">
+        <div class="weather-main"><div class="weather-icon">${weatherIcons[weather.weather?.[0]?.icon] || '🌤️'}</div><div class="weather-temp">${Math.round(weather.main.temp)}<span>°C</span></div><div class="weather-desc">${weather.weather?.[0]?.description || ''}</div><div class="weather-location">Palma de Mallorca</div></div>
+        <div class="weather-details">
+          <div class="weather-detail"><span class="weather-detail-icon">💧</span><div><p class="weather-detail-label">${labels[currentLang].humidity}</p><p class="weather-detail-value">${weather.main.humidity}%</p></div></div>
+          <div class="weather-detail"><span class="weather-detail-icon">💨</span><div><p class="weather-detail-label">${labels[currentLang].wind}</p><p class="weather-detail-value">${Math.round(weather.wind?.speed * 3.6)} km/h</p></div></div>
+          <div class="weather-detail"><span class="weather-detail-icon">🌡️</span><div><p class="weather-detail-label">${labels[currentLang].feelsLike}</p><p class="weather-detail-value">${Math.round(weather.main.feels_like)}°C</p></div></div>
+        </div></div>` : `<div class="weather-content"><div class="weather-main"><div class="weather-icon">🌤️</div><div class="weather-temp">--<span>°C</span></div><div class="weather-desc">Configura API Key en Admin</div><div class="weather-location">Palma de Mallorca</div></div></div>`;
+      container.innerHTML += `<div class="slide"><div class="slide-inner"><p class="section-label">Palma de Mallorca</p><h2 class="section-title">${labels[currentLang].weather}</h2>${weatherHTML}</div></div>`;
+
+      for (let i = 0; i < 4; i++) { const d = document.createElement('div'); d.className = `indicator${i === 0 ? ' active' : ''}`; d.onclick = () => goToSlide(i); ind.appendChild(d); }
+      document.querySelector(`.lang-pill[data-lang="${currentLang}"]`)?.classList.add('active');
+    }
+
+    function goToSlide(i) {
+      document.querySelectorAll('.slide').forEach((s, idx) => s.classList.toggle('active', idx === i));
+      document.querySelectorAll('.indicator').forEach((ind, idx) => ind.classList.toggle('active', idx === i));
+      currentSlide = i;
+    }
+
+    function changeLang(lang) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-pill').forEach(p => p.classList.toggle('active', p.dataset.lang === lang));
+      const idx = currentSlide;
+      render();
+      goToSlide(idx);
+      loadWeather();
+    }
+
+    function startClock() {
+      const update = () => {
+        const now = new Date();
+        document.getElementById('clock').textContent = now.toLocaleTimeString(currentLang, { hour: '2-digit', minute: '2-digit' });
+        document.getElementById('date').textContent = now.toLocaleDateString(currentLang, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+      };
+      update();
+      setInterval(update, 1000);
+    }
+
+    init();
+  </script>
+</body>
+</html>
