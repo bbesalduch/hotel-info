@@ -428,6 +428,23 @@
       color: var(--charcoal);
     }
 
+    .forecast-desc {
+      font-size: 9px;
+      color: var(--gray);
+      letter-spacing: 1px;
+      text-transform: capitalize;
+      margin-top: 8px;
+      line-height: 1.3;
+    }
+
+    .weather-today-date {
+      font-size: 12px;
+      color: var(--gray);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+
     .forecast-temp-min {
       font-size: 12px;
       color: var(--gray-light);
@@ -742,9 +759,9 @@
     const languages = ['es', 'en', 'de'];
 
     const labels = {
-      es: { welcome: 'Bienvenidos', schedule: 'Horarios', services: 'Servicios', weather: 'El Tiempo', wifi: 'WiFi Gratuito', network: 'Red', password: 'Contrasena', humidity: 'Humedad', wind: 'Viento', feelsLike: 'Sensacion', boutique: 'Hotel Boutique', today: 'Hoy', closed: 'Cerrado' },
-      en: { welcome: 'Welcome', schedule: 'Schedule', services: 'Services', weather: 'Weather', wifi: 'Free WiFi', network: 'Network', password: 'Password', humidity: 'Humidity', wind: 'Wind', feelsLike: 'Feels like', boutique: 'Boutique Hotel', today: 'Today', closed: 'Closed' },
-      de: { welcome: 'Willkommen', schedule: 'Offnungszeiten', services: 'Services', weather: 'Wetter', wifi: 'Kostenloses WLAN', network: 'Netzwerk', password: 'Passwort', humidity: 'Feuchtigkeit', wind: 'Wind', feelsLike: 'Gefuhlt', boutique: 'Boutique Hotel', today: 'Heute', closed: 'Geschlossen' }
+      es: { welcome: 'Bienvenidos', schedule: 'Horarios', services: 'Servicios', weather: 'El Tiempo en Palma', wifi: 'WiFi Gratuito', network: 'Red', password: 'Contrasena', humidity: 'Humedad', wind: 'Viento', feelsLike: 'Sensacion', boutique: 'Hotel Boutique', today: 'Hoy', closed: 'Cerrado' },
+      en: { welcome: 'Welcome', schedule: 'Schedule', services: 'Services', weather: 'Weather in Palma', wifi: 'Free WiFi', network: 'Network', password: 'Password', humidity: 'Humidity', wind: 'Wind', feelsLike: 'Feels like', boutique: 'Boutique Hotel', today: 'Today', closed: 'Closed' },
+      de: { welcome: 'Willkommen', schedule: 'Offnungszeiten', services: 'Services', weather: 'Wetter in Palma', wifi: 'Kostenloses WLAN', network: 'Netzwerk', password: 'Passwort', humidity: 'Feuchtigkeit', wind: 'Wind', feelsLike: 'Gefuhlt', boutique: 'Boutique Hotel', today: 'Heute', closed: 'Geschlossen' }
     };
 
     function isCurrentlyClosed(item) {
@@ -821,20 +838,23 @@
           days[dateStr] = {
             date: date,
             temps: [],
-            icon: item.weather[0].icon
+            icon: item.weather[0].icon,
+            desc: item.weather[0].description
           };
         }
         days[dateStr].temps.push(item.main.temp);
-        // Prefer midday icon
+        // Prefer midday icon and description
         if (date.getHours() >= 11 && date.getHours() <= 14) {
           days[dateStr].icon = item.weather[0].icon;
+          days[dateStr].desc = item.weather[0].description;
         }
       });
       return Object.values(days).slice(0, 5).map(d => ({
         day: d.date.getDay(),
         max: Math.round(Math.max(...d.temps)),
         min: Math.round(Math.min(...d.temps)),
-        icon: d.icon
+        icon: d.icon,
+        desc: d.desc
       }));
     }
 
@@ -930,20 +950,26 @@
           <div class="forecast-icon">${weatherSvgIcons[f.icon] || weatherSvgIcons.default}</div>
           <div class="forecast-temp">${f.max}°</div>
           <div class="forecast-temp-min">${f.min}°</div>
+          <div class="forecast-desc">${f.desc || ''}</div>
         </div>
       `).join('');
+
+      // Today's date info
+      const now = new Date();
+      const todayDayName = dayNames[currentLang][now.getDay()];
+      const todayDate = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}`;
 
       const hotelAddress = data?.settings?.hotel_address || 'Palma de Mallorca';
       let weatherHTML = weather?.main ? `<div class="weather-content">
         <div class="weather-today">
+          <div class="weather-today-date">${todayDayName}, ${todayDate}</div>
           <div class="weather-icon">${weatherSvgIcons[weather.weather?.[0]?.icon] || weatherSvgIcons.default}</div>
           <div class="weather-temp">${Math.round(weather.main.temp)}<span>°C</span></div>
           <div class="weather-desc">${weather.weather?.[0]?.description || ''}</div>
-          <div class="weather-location">${hotelAddress}</div>
         </div>
         <div class="weather-forecast">${forecastHTML}</div>
-      </div>` : `<div class="weather-content"><div class="weather-today"><div class="weather-icon">${weatherSvgIcons.default}</div><div class="weather-temp">--<span>°C</span></div><div class="weather-desc">Configura API Key en Admin</div><div class="weather-location">${hotelAddress}</div></div></div>`;
-      container.innerHTML += `<div class="slide"><div class="slide-inner"><p class="section-label">${hotelAddress}</p><h2 class="section-title">${labels[currentLang].weather}</h2>${weatherHTML}</div></div>`;
+      </div>` : `<div class="weather-content"><div class="weather-today"><div class="weather-icon">${weatherSvgIcons.default}</div><div class="weather-temp">--<span>°C</span></div><div class="weather-desc">Configura API Key en Admin</div></div></div>`;
+      container.innerHTML += `<div class="slide"><div class="slide-inner"><p class="section-label">Hotel Can Quetglas</p><h2 class="section-title">${labels[currentLang].weather}</h2>${weatherHTML}</div></div>`;
 
       // Update footer address
       document.querySelector('.footer-info span:first-child').textContent = hotelAddress;
