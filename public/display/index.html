@@ -134,7 +134,7 @@
 
     .slide-inner {
       text-align: center;
-      max-width: 1000px;
+      max-width: 1200px;
     }
 
     /* Welcome */
@@ -205,104 +205,149 @@
       margin-bottom: 60px;
     }
 
-    /* Schedule grid */
+    /* Schedule grid with photos */
     .schedule-grid {
       display: flex;
       justify-content: center;
-      gap: 40px;
+      gap: 30px;
     }
 
     .schedule-card {
-      width: 200px;
-      padding: 40px 30px;
+      width: 240px;
       background: var(--warm-white);
       border: 1px solid var(--sand);
       text-align: center;
       transition: all 0.3s ease;
+      overflow: hidden;
+    }
+
+    .schedule-card-image {
+      width: 100%;
+      height: 140px;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--sand);
+    }
+
+    .schedule-card-content {
+      padding: 25px 20px;
     }
 
     .schedule-icon {
-      font-size: 28px;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
+    }
+
+    .schedule-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--gray);
+      stroke-width: 1.5;
+      fill: none;
     }
 
     .schedule-name {
-      font-size: 16px;
+      font-size: 15px;
       letter-spacing: 2px;
       color: var(--charcoal);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .schedule-time {
-      font-size: 14px;
+      font-size: 13px;
       color: var(--gold);
       letter-spacing: 1px;
     }
 
-    /* Services grid */
+    /* Services grid with photos */
     .services-grid {
       display: flex;
       justify-content: center;
-      gap: 50px;
+      gap: 30px;
     }
 
     .service-card {
-      width: 220px;
+      width: 240px;
       text-align: center;
+      background: var(--warm-white);
+      border: 1px solid var(--sand);
+      overflow: hidden;
+    }
+
+    .service-card-image {
+      width: 100%;
+      height: 140px;
+      background-size: cover;
+      background-position: center;
+      background-color: var(--sand);
+    }
+
+    .service-card-content {
+      padding: 25px 20px;
     }
 
     .service-icon {
-      width: 60px;
-      height: 60px;
+      width: 50px;
+      height: 50px;
       border: 1px solid var(--gold);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
-      margin: 0 auto 20px;
+      margin: 0 auto 15px;
+    }
+
+    .service-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--gold);
+      stroke-width: 1.5;
+      fill: none;
     }
 
     .service-name {
-      font-size: 16px;
+      font-size: 15px;
       letter-spacing: 2px;
       color: var(--charcoal);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     .service-desc {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--gray);
-      line-height: 1.6;
+      line-height: 1.5;
       letter-spacing: 0.5px;
     }
 
-    /* Weather */
+    /* Weather - 5 day forecast */
     .weather-content {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      gap: 80px;
+      gap: 60px;
     }
 
-    .weather-main {
+    .weather-today {
       text-align: center;
     }
 
-    .weather-icon {
-      font-size: 70px;
+    .weather-icon svg {
+      width: 80px;
+      height: 80px;
+      stroke: var(--gold);
+      stroke-width: 1.5;
+      fill: none;
       margin-bottom: 15px;
     }
 
     .weather-temp {
-      font-size: 90px;
+      font-size: 72px;
       font-weight: 300;
       color: var(--charcoal);
       line-height: 1;
     }
 
     .weather-temp span {
-      font-size: 30px;
+      font-size: 24px;
       vertical-align: super;
     }
 
@@ -322,35 +367,45 @@
       margin-top: 8px;
     }
 
-    .weather-details {
+    .weather-forecast {
       display: flex;
-      flex-direction: column;
-      gap: 20px;
+      gap: 15px;
     }
 
-    .weather-detail {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 15px 25px;
+    .forecast-day {
+      text-align: center;
+      padding: 20px 15px;
       background: var(--warm-white);
       border: 1px solid var(--sand);
+      min-width: 90px;
     }
 
-    .weather-detail-icon {
-      font-size: 20px;
-    }
-
-    .weather-detail-label {
+    .forecast-day-name {
       font-size: 10px;
-      color: var(--gray-light);
       letter-spacing: 2px;
       text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 12px;
     }
 
-    .weather-detail-value {
+    .forecast-icon svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--gray);
+      stroke-width: 1.5;
+      fill: none;
+      margin-bottom: 10px;
+    }
+
+    .forecast-temp {
       font-size: 18px;
       color: var(--charcoal);
+    }
+
+    .forecast-temp-min {
+      font-size: 12px;
+      color: var(--gray-light);
+      margin-top: 4px;
     }
 
     /* Footer */
@@ -395,23 +450,24 @@
 
     .slide.active .schedule-card,
     .slide.active .service-card,
-    .slide.active .weather-detail {
+    .slide.active .forecast-day {
       animation: fadeUp 0.6s ease forwards;
       opacity: 0;
     }
 
     .slide.active .schedule-card:nth-child(1),
-    .slide.active .service-card:nth-child(1) { animation-delay: 0.1s; }
+    .slide.active .service-card:nth-child(1),
+    .slide.active .forecast-day:nth-child(1) { animation-delay: 0.1s; }
     .slide.active .schedule-card:nth-child(2),
-    .slide.active .service-card:nth-child(2) { animation-delay: 0.2s; }
+    .slide.active .service-card:nth-child(2),
+    .slide.active .forecast-day:nth-child(2) { animation-delay: 0.2s; }
     .slide.active .schedule-card:nth-child(3),
-    .slide.active .service-card:nth-child(3) { animation-delay: 0.3s; }
+    .slide.active .service-card:nth-child(3),
+    .slide.active .forecast-day:nth-child(3) { animation-delay: 0.3s; }
     .slide.active .schedule-card:nth-child(4),
-    .slide.active .service-card:nth-child(4) { animation-delay: 0.4s; }
-
-    .slide.active .weather-detail:nth-child(1) { animation-delay: 0.15s; }
-    .slide.active .weather-detail:nth-child(2) { animation-delay: 0.25s; }
-    .slide.active .weather-detail:nth-child(3) { animation-delay: 0.35s; }
+    .slide.active .service-card:nth-child(4),
+    .slide.active .forecast-day:nth-child(4) { animation-delay: 0.4s; }
+    .slide.active .forecast-day:nth-child(5) { animation-delay: 0.5s; }
 
     /* Video Hero Slide */
     .video-hero {
@@ -426,9 +482,9 @@
       top: 50%;
       left: 50%;
       width: 100vw;
-      height: 56.25vw; /* 16:9 aspect ratio */
+      height: 56.25vw;
       min-height: 100vh;
-      min-width: 177.77vh; /* 16:9 aspect ratio */
+      min-width: 177.77vh;
       transform: translate(-50%, -50%);
       pointer-events: none;
     }
@@ -545,16 +601,68 @@
   </div>
 
   <script>
-    const icons = { 'coffee': '☕', 'log-out': '🚪', 'waves': '🏊', 'concierge-bell': '🛎️', 'wifi': '📶', 'car': '🚗', 'sun': '☀️', 'utensils': '🍽️', 'spa': '💆', 'gym': '💪', 'default': '✦' };
-    const weatherIcons = { '01d': '☀️', '01n': '🌙', '02d': '⛅', '02n': '☁️', '03d': '☁️', '03n': '☁️', '04d': '☁️', '04n': '☁️', '09d': '🌧️', '09n': '🌧️', '10d': '🌦️', '10n': '🌧️', '11d': '⛈️', '11n': '⛈️', '13d': '❄️', '13n': '❄️', '50d': '🌫️', '50n': '🌫️' };
+    // SVG Icons - minimalist line style
+    const svgIcons = {
+      'coffee': '<svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>',
+      'log-out': '<svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>',
+      'waves': '<svg viewBox="0 0 24 24"><path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 6c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 18c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/></svg>',
+      'wifi': '<svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/></svg>',
+      'car': '<svg viewBox="0 0 24 24"><path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2"/><circle cx="6.5" cy="16.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg>',
+      'sun': '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
+      'utensils': '<svg viewBox="0 0 24 24"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3zm0 0v7"/></svg>',
+      'spa': '<svg viewBox="0 0 24 24"><path d="M12 22c-4-3-8-6-8-11a8 8 0 1 1 16 0c0 5-4 8-8 11z"/><circle cx="12" cy="11" r="3"/></svg>',
+      'gym': '<svg viewBox="0 0 24 24"><path d="M6.5 6.5h11"/><path d="M6.5 17.5h11"/><path d="M4 10v4"/><path d="M20 10v4"/><path d="M2 11v2"/><path d="M22 11v2"/><path d="M12 6.5v11"/></svg>',
+      'terrace': '<svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M3 12h18"/><path d="M5.5 5.5l13 13"/><path d="M18.5 5.5l-13 13"/><circle cx="12" cy="12" r="9"/></svg>',
+      'default': '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>'
+    };
 
-    let data = null, weather = null, currentSlide = 0, currentLang = 'es', langIndex = 0;
+    // Weather SVG icons
+    const weatherSvgIcons = {
+      '01d': '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>',
+      '01n': '<svg viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+      '02d': '<svg viewBox="0 0 24 24"><circle cx="12" cy="10" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="4.93" y1="4.93" x2="6.34" y2="6.34"/><line x1="2" y1="10" x2="4" y2="10"/><path d="M8 16H6a4 4 0 0 1 0-8h.5"/><path d="M20 16H8a4 4 0 0 1 0-8h.5a5.5 5.5 0 0 1 11 0 4 4 0 0 1-.5 8z"/></svg>',
+      '02n': '<svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>',
+      '03d': '<svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>',
+      '03n': '<svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>',
+      '04d': '<svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>',
+      '04n': '<svg viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/></svg>',
+      '09d': '<svg viewBox="0 0 24 24"><path d="M17.5 17H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="19" x2="12" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/></svg>',
+      '09n': '<svg viewBox="0 0 24 24"><path d="M17.5 17H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="19" x2="12" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/></svg>',
+      '10d': '<svg viewBox="0 0 24 24"><path d="M17.5 17H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="19" x2="12" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/></svg>',
+      '10n': '<svg viewBox="0 0 24 24"><path d="M17.5 17H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/><line x1="8" y1="19" x2="8" y2="21"/><line x1="12" y1="19" x2="12" y2="21"/><line x1="16" y1="19" x2="16" y2="21"/></svg>',
+      '11d': '<svg viewBox="0 0 24 24"><path d="M17.5 17H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/><polyline points="13 19 9 23 14 23 10 27"/></svg>',
+      '11n': '<svg viewBox="0 0 24 24"><path d="M17.5 17H9a7 7 0 1 1 6.71-9h1.79a4.5 4.5 0 1 1 0 9z"/><polyline points="13 19 9 23 14 23 10 27"/></svg>',
+      '13d': '<svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>',
+      '13n': '<svg viewBox="0 0 24 24"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>',
+      '50d': '<svg viewBox="0 0 24 24"><line x1="3" y1="8" x2="21" y2="8"/><line x1="5" y1="12" x2="19" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>',
+      '50n': '<svg viewBox="0 0 24 24"><line x1="3" y1="8" x2="21" y2="8"/><line x1="5" y1="12" x2="19" y2="12"/><line x1="7" y1="16" x2="17" y2="16"/></svg>',
+      'default': '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>'
+    };
+
+    // Hotel images - replace with your own
+    const hotelImages = {
+      breakfast: '/images/breakfast.jpg',
+      checkout: '/images/checkout.jpg',
+      pool: '/images/pool.jpg',
+      reception: '/images/reception.jpg',
+      wifi: '/images/wifi.jpg',
+      parking: '/images/parking.jpg',
+      terrace: '/images/terrace.jpg'
+    };
+
+    let data = null, weather = null, forecast = null, currentSlide = 0, currentLang = 'es', langIndex = 0;
     const languages = ['es', 'en', 'de'];
 
     const labels = {
-      es: { welcome: 'Bienvenidos', schedule: 'Horarios', services: 'Servicios', weather: 'El Tiempo', wifi: 'WiFi Gratuito', network: 'Red', password: 'Contraseña', humidity: 'Humedad', wind: 'Viento', feelsLike: 'Sensación', boutique: 'Hotel Boutique' },
-      en: { welcome: 'Welcome', schedule: 'Schedule', services: 'Services', weather: 'Weather', wifi: 'Free WiFi', network: 'Network', password: 'Password', humidity: 'Humidity', wind: 'Wind', feelsLike: 'Feels like', boutique: 'Boutique Hotel' },
-      de: { welcome: 'Willkommen', schedule: 'Öffnungszeiten', services: 'Services', weather: 'Wetter', wifi: 'Kostenloses WLAN', network: 'Netzwerk', password: 'Passwort', humidity: 'Feuchtigkeit', wind: 'Wind', feelsLike: 'Gefühlt', boutique: 'Boutique Hotel' }
+      es: { welcome: 'Bienvenidos', schedule: 'Horarios', services: 'Servicios', weather: 'El Tiempo', wifi: 'WiFi Gratuito', network: 'Red', password: 'Contrasena', humidity: 'Humedad', wind: 'Viento', feelsLike: 'Sensacion', boutique: 'Hotel Boutique', today: 'Hoy' },
+      en: { welcome: 'Welcome', schedule: 'Schedule', services: 'Services', weather: 'Weather', wifi: 'Free WiFi', network: 'Network', password: 'Password', humidity: 'Humidity', wind: 'Wind', feelsLike: 'Feels like', boutique: 'Boutique Hotel', today: 'Today' },
+      de: { welcome: 'Willkommen', schedule: 'Offnungszeiten', services: 'Services', weather: 'Wetter', wifi: 'Kostenloses WLAN', network: 'Netzwerk', password: 'Passwort', humidity: 'Feuchtigkeit', wind: 'Wind', feelsLike: 'Gefuhlt', boutique: 'Boutique Hotel', today: 'Heute' }
+    };
+
+    const dayNames = {
+      es: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
+      en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+      de: ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa']
     };
 
     async function init() {
@@ -575,7 +683,46 @@
 
     async function loadWeather() {
       if (!data?.settings?.weather_api_key) return;
-      try { weather = await (await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${data.settings.weather_lat || '39.5696'}&lon=${data.settings.weather_lon || '2.6502'}&appid=${data.settings.weather_api_key}&units=metric&lang=${currentLang}`)).json(); } catch (e) {}
+      const lat = data.settings.weather_lat || '39.5696';
+      const lon = data.settings.weather_lon || '2.6502';
+      const apiKey = data.settings.weather_api_key;
+      try {
+        // Current weather
+        weather = await (await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=${currentLang}`)).json();
+        // 5 day forecast
+        const forecastData = await (await fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=${currentLang}`)).json();
+        // Process forecast to get one entry per day
+        forecast = processForecast(forecastData);
+      } catch (e) { console.error(e); }
+    }
+
+    function processForecast(data) {
+      if (!data?.list) return [];
+      const days = {};
+      const today = new Date().toDateString();
+      data.list.forEach(item => {
+        const date = new Date(item.dt * 1000);
+        const dateStr = date.toDateString();
+        if (dateStr === today) return; // Skip today
+        if (!days[dateStr]) {
+          days[dateStr] = {
+            date: date,
+            temps: [],
+            icon: item.weather[0].icon
+          };
+        }
+        days[dateStr].temps.push(item.main.temp);
+        // Prefer midday icon
+        if (date.getHours() >= 11 && date.getHours() <= 14) {
+          days[dateStr].icon = item.weather[0].icon;
+        }
+      });
+      return Object.values(days).slice(0, 5).map(d => ({
+        day: d.date.getDay(),
+        max: Math.round(Math.max(...d.temps)),
+        min: Math.round(Math.min(...d.temps)),
+        icon: d.icon
+      }));
     }
 
     function render() {
@@ -586,7 +733,7 @@
 
       // Video Hero (Mallorca)
       const videoLabels = {
-        es: { discover: 'Descubre Mallorca', tagline: 'Un paraíso en el Mediterráneo' },
+        es: { discover: 'Descubre Mallorca', tagline: 'Un paraiso en el Mediterraneo' },
         en: { discover: 'Discover Mallorca', tagline: 'A Mediterranean Paradise' },
         de: { discover: 'Entdecken Sie Mallorca', tagline: 'Ein Paradies im Mittelmeer' }
       };
@@ -613,26 +760,57 @@
         <div class="divider"></div>
         <div class="wifi-box">
           <div class="wifi-item"><p class="wifi-label">${labels[currentLang].network}</p><p class="wifi-value">${data?.settings?.wifi_network || 'Hotel Can Quetglas'}</p></div>
-          <div class="wifi-item"><p class="wifi-label">${labels[currentLang].password}</p><p class="wifi-value">${data?.settings?.wifi_password || '••••••••'}</p></div>
+          <div class="wifi-item"><p class="wifi-label">${labels[currentLang].password}</p><p class="wifi-value">${data?.settings?.wifi_password || '--------'}</p></div>
         </div>
       </div></div>`;
 
-      // Schedule
-      let scheduleHTML = (data?.schedule || []).map(i => `<div class="schedule-card"><div class="schedule-icon">${icons[i.icon] || icons.default}</div><div class="schedule-name">${i[`name_${currentLang}`] || i.name_es}</div><div class="schedule-time">${i.time_end ? i.time_start + ' – ' + i.time_end : i.time_start}</div></div>`).join('');
+      // Schedule with images
+      let scheduleHTML = (data?.schedule || []).map(i => {
+        const img = i.image ? `<div class="schedule-card-image" style="background-image: url('${i.image}')"></div>` : '';
+        return `<div class="schedule-card">
+          ${img}
+          <div class="schedule-card-content">
+            <div class="schedule-icon">${svgIcons[i.icon] || svgIcons.default}</div>
+            <div class="schedule-name">${i[`name_${currentLang}`] || i.name_es}</div>
+            <div class="schedule-time">${i.time_end ? i.time_start + ' - ' + i.time_end : i.time_start}</div>
+          </div>
+        </div>`;
+      }).join('');
       container.innerHTML += `<div class="slide"><div class="slide-inner"><p class="section-label">Hotel Can Quetglas</p><h2 class="section-title">${labels[currentLang].schedule}</h2><div class="schedule-grid">${scheduleHTML}</div></div></div>`;
 
-      // Services
-      let servicesHTML = (data?.services || []).map(s => `<div class="service-card"><div class="service-icon">${icons[s.icon] || icons.default}</div><div class="service-name">${s[`name_${currentLang}`] || s.name_es}</div><div class="service-desc">${s[`description_${currentLang}`] || s.description_es}</div></div>`).join('');
+      // Services with images
+      let servicesHTML = (data?.services || []).map(s => {
+        const img = s.image ? `<div class="service-card-image" style="background-image: url('${s.image}')"></div>` : '';
+        return `<div class="service-card">
+          ${img}
+          <div class="service-card-content">
+            <div class="service-icon">${svgIcons[s.icon] || svgIcons.default}</div>
+            <div class="service-name">${s[`name_${currentLang}`] || s.name_es}</div>
+            <div class="service-desc">${s[`description_${currentLang}`] || s.description_es}</div>
+          </div>
+        </div>`;
+      }).join('');
       container.innerHTML += `<div class="slide"><div class="slide-inner"><p class="section-label">Hotel Can Quetglas</p><h2 class="section-title">${labels[currentLang].services}</h2><div class="services-grid">${servicesHTML}</div></div></div>`;
 
-      // Weather
+      // Weather with 5-day forecast
+      let forecastHTML = (forecast || []).map(f => `
+        <div class="forecast-day">
+          <div class="forecast-day-name">${dayNames[currentLang][f.day]}</div>
+          <div class="forecast-icon">${weatherSvgIcons[f.icon] || weatherSvgIcons.default}</div>
+          <div class="forecast-temp">${f.max}°</div>
+          <div class="forecast-temp-min">${f.min}°</div>
+        </div>
+      `).join('');
+
       let weatherHTML = weather?.main ? `<div class="weather-content">
-        <div class="weather-main"><div class="weather-icon">${weatherIcons[weather.weather?.[0]?.icon] || '🌤️'}</div><div class="weather-temp">${Math.round(weather.main.temp)}<span>°C</span></div><div class="weather-desc">${weather.weather?.[0]?.description || ''}</div><div class="weather-location">Palma de Mallorca</div></div>
-        <div class="weather-details">
-          <div class="weather-detail"><span class="weather-detail-icon">💧</span><div><p class="weather-detail-label">${labels[currentLang].humidity}</p><p class="weather-detail-value">${weather.main.humidity}%</p></div></div>
-          <div class="weather-detail"><span class="weather-detail-icon">💨</span><div><p class="weather-detail-label">${labels[currentLang].wind}</p><p class="weather-detail-value">${Math.round(weather.wind?.speed * 3.6)} km/h</p></div></div>
-          <div class="weather-detail"><span class="weather-detail-icon">🌡️</span><div><p class="weather-detail-label">${labels[currentLang].feelsLike}</p><p class="weather-detail-value">${Math.round(weather.main.feels_like)}°C</p></div></div>
-        </div></div>` : `<div class="weather-content"><div class="weather-main"><div class="weather-icon">🌤️</div><div class="weather-temp">--<span>°C</span></div><div class="weather-desc">Configura API Key en Admin</div><div class="weather-location">Palma de Mallorca</div></div></div>`;
+        <div class="weather-today">
+          <div class="weather-icon">${weatherSvgIcons[weather.weather?.[0]?.icon] || weatherSvgIcons.default}</div>
+          <div class="weather-temp">${Math.round(weather.main.temp)}<span>°C</span></div>
+          <div class="weather-desc">${weather.weather?.[0]?.description || ''}</div>
+          <div class="weather-location">Palma de Mallorca</div>
+        </div>
+        <div class="weather-forecast">${forecastHTML}</div>
+      </div>` : `<div class="weather-content"><div class="weather-today"><div class="weather-icon">${weatherSvgIcons.default}</div><div class="weather-temp">--<span>°C</span></div><div class="weather-desc">Configura API Key en Admin</div><div class="weather-location">Palma de Mallorca</div></div></div>`;
       container.innerHTML += `<div class="slide"><div class="slide-inner"><p class="section-label">Palma de Mallorca</p><h2 class="section-title">${labels[currentLang].weather}</h2>${weatherHTML}</div></div>`;
 
       for (let i = 0; i < 5; i++) { const d = document.createElement('div'); d.className = `indicator${i === 0 ? ' active' : ''}`; d.onclick = () => goToSlide(i); ind.appendChild(d); }
