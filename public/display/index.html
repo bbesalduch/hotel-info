@@ -258,6 +258,14 @@
       letter-spacing: 1px;
     }
 
+    .schedule-closed {
+      font-size: 12px;
+      color: #dc2626;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
     /* Services grid with photos */
     .services-grid {
       display: flex;
@@ -654,10 +662,35 @@
     const languages = ['es', 'en', 'de'];
 
     const labels = {
-      es: { welcome: 'Bienvenidos', schedule: 'Horarios', services: 'Servicios', weather: 'El Tiempo', wifi: 'WiFi Gratuito', network: 'Red', password: 'Contrasena', humidity: 'Humedad', wind: 'Viento', feelsLike: 'Sensacion', boutique: 'Hotel Boutique', today: 'Hoy' },
-      en: { welcome: 'Welcome', schedule: 'Schedule', services: 'Services', weather: 'Weather', wifi: 'Free WiFi', network: 'Network', password: 'Password', humidity: 'Humidity', wind: 'Wind', feelsLike: 'Feels like', boutique: 'Boutique Hotel', today: 'Today' },
-      de: { welcome: 'Willkommen', schedule: 'Offnungszeiten', services: 'Services', weather: 'Wetter', wifi: 'Kostenloses WLAN', network: 'Netzwerk', password: 'Passwort', humidity: 'Feuchtigkeit', wind: 'Wind', feelsLike: 'Gefuhlt', boutique: 'Boutique Hotel', today: 'Heute' }
+      es: { welcome: 'Bienvenidos', schedule: 'Horarios', services: 'Servicios', weather: 'El Tiempo', wifi: 'WiFi Gratuito', network: 'Red', password: 'Contrasena', humidity: 'Humedad', wind: 'Viento', feelsLike: 'Sensacion', boutique: 'Hotel Boutique', today: 'Hoy', closed: 'Cerrado' },
+      en: { welcome: 'Welcome', schedule: 'Schedule', services: 'Services', weather: 'Weather', wifi: 'Free WiFi', network: 'Network', password: 'Password', humidity: 'Humidity', wind: 'Wind', feelsLike: 'Feels like', boutique: 'Boutique Hotel', today: 'Today', closed: 'Closed' },
+      de: { welcome: 'Willkommen', schedule: 'Offnungszeiten', services: 'Services', weather: 'Wetter', wifi: 'Kostenloses WLAN', network: 'Netzwerk', password: 'Passwort', humidity: 'Feuchtigkeit', wind: 'Wind', feelsLike: 'Gefuhlt', boutique: 'Boutique Hotel', today: 'Heute', closed: 'Geschlossen' }
     };
+
+    function isCurrentlyClosed(item) {
+      if (!item.is_closed) return false;
+      if (!item.closed_from || !item.closed_to) return true;
+      const today = new Date();
+      const thisYear = today.getFullYear();
+      // Parse dates (stored as YYYY-MM-DD)
+      const fromParts = item.closed_from.split('-');
+      const toParts = item.closed_to.split('-');
+      const fromMonth = parseInt(fromParts[1]);
+      const fromDay = parseInt(fromParts[2]);
+      const toMonth = parseInt(toParts[1]);
+      const toDay = parseInt(toParts[2]);
+      // Handle ranges that cross year boundary (e.g., Nov 1 - Mar 31)
+      const fromDate = new Date(thisYear, fromMonth - 1, fromDay);
+      let toDate = new Date(thisYear, toMonth - 1, toDay);
+      if (toDate < fromDate) {
+        // Range crosses year boundary
+        if (today >= fromDate) return true;
+        toDate = new Date(thisYear, toMonth - 1, toDay);
+        if (today <= toDate) return true;
+        return false;
+      }
+      return today >= fromDate && today <= toDate;
+    }
 
     const dayNames = {
       es: ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab'],
@@ -767,12 +800,16 @@
       // Schedule with images
       let scheduleHTML = (data?.schedule || []).map(i => {
         const img = i.image ? `<div class="schedule-card-image" style="background-image: url('${i.image}')"></div>` : '';
+        const closed = isCurrentlyClosed(i);
+        const timeOrClosed = closed
+          ? `<div class="schedule-closed">${labels[currentLang].closed}</div>`
+          : `<div class="schedule-time">${i.time_end ? i.time_start + ' - ' + i.time_end : i.time_start}</div>`;
         return `<div class="schedule-card">
           ${img}
           <div class="schedule-card-content">
             <div class="schedule-icon">${svgIcons[i.icon] || svgIcons.default}</div>
             <div class="schedule-name">${i[`name_${currentLang}`] || i.name_es}</div>
-            <div class="schedule-time">${i.time_end ? i.time_start + ' - ' + i.time_end : i.time_start}</div>
+            ${timeOrClosed}
           </div>
         </div>`;
       }).join('');

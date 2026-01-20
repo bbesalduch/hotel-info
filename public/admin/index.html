@@ -79,6 +79,20 @@
     .icon-option:hover { border-color: var(--gold); }
     .icon-option.selected { border-color: var(--gold); background: var(--white); }
     .empty-state { text-align: center; padding: 50px 20px; color: var(--gray); font-size: 13px; letter-spacing: 1px; }
+
+    .image-upload { display: flex; flex-direction: column; gap: 10px; }
+    .image-preview { width: 100%; max-height: 150px; object-fit: cover; border: 1px solid var(--sand); display: none; }
+    .image-preview.has-image { display: block; }
+    .image-input { padding: 10px; background: var(--cream); border: 1px dashed var(--sand); cursor: pointer; text-align: center; font-size: 12px; color: var(--gray); }
+    .image-input:hover { border-color: var(--gold); }
+    .image-remove { font-size: 11px; color: var(--danger); cursor: pointer; text-align: right; display: none; }
+    .image-remove.has-image { display: block; }
+
+    .checkbox-group { display: flex; align-items: center; gap: 10px; }
+    .checkbox-group input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+    .date-range { display: none; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
+    .date-range.visible { display: grid; }
+    .closed-badge { background: var(--danger); color: white; font-size: 9px; padding: 2px 6px; margin-left: 8px; }
   </style>
 </head>
 <body>
@@ -112,9 +126,14 @@
     </div>
   </main>
 
-  <div class="modal-overlay" id="schedule-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title" id="schedule-modal-title">Añadir Horario</h3><button class="modal-close" onclick="closeScheduleModal()">×</button></div><input type="hidden" id="schedule-edit-id"><div class="form-grid"><div class="form-group"><label><span class="lang-badge es">ES</span></label><input type="text" id="schedule-name-es" placeholder="Desayuno"></div><div class="form-group"><label><span class="lang-badge en">EN</span></label><input type="text" id="schedule-name-en" placeholder="Breakfast"></div><div class="form-group"><label><span class="lang-badge de">DE</span></label><input type="text" id="schedule-name-de" placeholder="Frühstück"></div><div class="form-group"><label>Hora Inicio</label><input type="time" id="schedule-time-start"></div><div class="form-group"><label>Hora Fin</label><input type="time" id="schedule-time-end"></div><div class="form-group"><label>Orden</label><input type="number" id="schedule-order" value="0"></div><div class="form-group full-width"><label>Icono</label><div class="icon-selector" id="schedule-icon-selector"><button type="button" class="icon-option" data-icon="coffee">☕</button><button type="button" class="icon-option" data-icon="log-out">🚪</button><button type="button" class="icon-option" data-icon="waves">🏊</button><button type="button" class="icon-option" data-icon="concierge-bell">🛎️</button><button type="button" class="icon-option" data-icon="utensils">🍽️</button><button type="button" class="icon-option" data-icon="sun">☀️</button></div><input type="hidden" id="schedule-icon" value="coffee"></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeScheduleModal()">Cancelar</button><button class="btn btn-primary" onclick="saveScheduleItem()">Guardar</button></div></div></div>
+  <div class="modal-overlay" id="schedule-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title" id="schedule-modal-title">Añadir Horario</h3><button class="modal-close" onclick="closeScheduleModal()">×</button></div><input type="hidden" id="schedule-edit-id"><input type="hidden" id="schedule-image-path"><div class="form-grid"><div class="form-group"><label><span class="lang-badge es">ES</span></label><input type="text" id="schedule-name-es" placeholder="Desayuno"></div><div class="form-group"><label><span class="lang-badge en">EN</span></label><input type="text" id="schedule-name-en" placeholder="Breakfast"></div><div class="form-group"><label><span class="lang-badge de">DE</span></label><input type="text" id="schedule-name-de" placeholder="Frühstück"></div><div class="form-group"><label>Hora Inicio</label><input type="time" id="schedule-time-start"></div><div class="form-group"><label>Hora Fin</label><input type="time" id="schedule-time-end"></div><div class="form-group"><label>Orden</label><input type="number" id="schedule-order" value="0"></div>
+<div class="form-group full-width"><label>Foto</label><div class="image-upload"><img id="schedule-image-preview" class="image-preview" src="" alt=""><label class="image-input" for="schedule-image-input">Haz clic para subir una imagen</label><input type="file" id="schedule-image-input" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'schedule')"><span id="schedule-image-remove" class="image-remove" onclick="removeImage('schedule')">Eliminar imagen</span></div></div>
+<div class="form-group full-width"><div class="checkbox-group"><input type="checkbox" id="schedule-is-closed" onchange="toggleClosedDates()"><label for="schedule-is-closed" style="cursor:pointer">Cerrado temporalmente</label></div><div class="date-range" id="schedule-closed-range"><div class="form-group"><label>Cerrado desde</label><input type="date" id="schedule-closed-from"></div><div class="form-group"><label>Cerrado hasta</label><input type="date" id="schedule-closed-to"></div></div></div>
+<div class="form-group full-width"><label>Icono</label><div class="icon-selector" id="schedule-icon-selector"><button type="button" class="icon-option" data-icon="coffee">☕</button><button type="button" class="icon-option" data-icon="log-out">🚪</button><button type="button" class="icon-option" data-icon="waves">🏊</button><button type="button" class="icon-option" data-icon="concierge-bell">🛎️</button><button type="button" class="icon-option" data-icon="utensils">🍽️</button><button type="button" class="icon-option" data-icon="sun">☀️</button></div><input type="hidden" id="schedule-icon" value="coffee"></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeScheduleModal()">Cancelar</button><button class="btn btn-primary" onclick="saveScheduleItem()">Guardar</button></div></div></div>
 
-  <div class="modal-overlay" id="service-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title" id="service-modal-title">Añadir Servicio</h3><button class="modal-close" onclick="closeServiceModal()">×</button></div><input type="hidden" id="service-edit-id"><div class="form-grid"><div class="form-group"><label><span class="lang-badge es">ES</span></label><input type="text" id="service-name-es" placeholder="Piscina"></div><div class="form-group"><label><span class="lang-badge en">EN</span></label><input type="text" id="service-name-en" placeholder="Pool"></div><div class="form-group"><label><span class="lang-badge de">DE</span></label><input type="text" id="service-name-de" placeholder="Pool"></div><div class="form-group full-width"><label><span class="lang-badge es">ES</span> Descripción</label><textarea id="service-desc-es"></textarea></div><div class="form-group full-width"><label><span class="lang-badge en">EN</span> Description</label><textarea id="service-desc-en"></textarea></div><div class="form-group full-width"><label><span class="lang-badge de">DE</span> Beschreibung</label><textarea id="service-desc-de"></textarea></div><div class="form-group"><label>Orden</label><input type="number" id="service-order" value="0"></div><div class="form-group full-width"><label>Icono</label><div class="icon-selector" id="service-icon-selector"><button type="button" class="icon-option" data-icon="waves">🏊</button><button type="button" class="icon-option" data-icon="wifi">📶</button><button type="button" class="icon-option" data-icon="car">🚗</button><button type="button" class="icon-option" data-icon="sun">☀️</button><button type="button" class="icon-option" data-icon="spa">💆</button><button type="button" class="icon-option" data-icon="gym">💪</button><button type="button" class="icon-option" data-icon="utensils">🍽️</button><button type="button" class="icon-option" data-icon="coffee">☕</button></div><input type="hidden" id="service-icon" value="waves"></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeServiceModal()">Cancelar</button><button class="btn btn-primary" onclick="saveServiceItem()">Guardar</button></div></div></div>
+  <div class="modal-overlay" id="service-modal"><div class="modal"><div class="modal-header"><h3 class="modal-title" id="service-modal-title">Añadir Servicio</h3><button class="modal-close" onclick="closeServiceModal()">×</button></div><input type="hidden" id="service-edit-id"><input type="hidden" id="service-image-path"><div class="form-grid"><div class="form-group"><label><span class="lang-badge es">ES</span></label><input type="text" id="service-name-es" placeholder="Piscina"></div><div class="form-group"><label><span class="lang-badge en">EN</span></label><input type="text" id="service-name-en" placeholder="Pool"></div><div class="form-group"><label><span class="lang-badge de">DE</span></label><input type="text" id="service-name-de" placeholder="Pool"></div><div class="form-group full-width"><label><span class="lang-badge es">ES</span> Descripción</label><textarea id="service-desc-es"></textarea></div><div class="form-group full-width"><label><span class="lang-badge en">EN</span> Description</label><textarea id="service-desc-en"></textarea></div><div class="form-group full-width"><label><span class="lang-badge de">DE</span> Beschreibung</label><textarea id="service-desc-de"></textarea></div><div class="form-group"><label>Orden</label><input type="number" id="service-order" value="0"></div>
+<div class="form-group full-width"><label>Foto</label><div class="image-upload"><img id="service-image-preview" class="image-preview" src="" alt=""><label class="image-input" for="service-image-input">Haz clic para subir una imagen</label><input type="file" id="service-image-input" accept="image/*" style="display:none" onchange="handleImageUpload(this, 'service')"><span id="service-image-remove" class="image-remove" onclick="removeImage('service')">Eliminar imagen</span></div></div>
+<div class="form-group full-width"><label>Icono</label><div class="icon-selector" id="service-icon-selector"><button type="button" class="icon-option" data-icon="waves">🏊</button><button type="button" class="icon-option" data-icon="wifi">📶</button><button type="button" class="icon-option" data-icon="car">🚗</button><button type="button" class="icon-option" data-icon="sun">☀️</button><button type="button" class="icon-option" data-icon="spa">💆</button><button type="button" class="icon-option" data-icon="gym">💪</button><button type="button" class="icon-option" data-icon="utensils">🍽️</button><button type="button" class="icon-option" data-icon="coffee">☕</button></div><input type="hidden" id="service-icon" value="waves"></div></div><div class="modal-footer"><button class="btn btn-secondary" onclick="closeServiceModal()">Cancelar</button><button class="btn btn-primary" onclick="saveServiceItem()">Guardar</button></div></div></div>
 
   <div class="toast" id="toast"></div>
 
@@ -130,25 +149,148 @@
 
     async function saveAllSettings() { const fields = ['hotel_name','hotel_address','hotel_phone','wifi_network','wifi_password','welcome_message_es','welcome_message_en','welcome_message_de','slide_duration','weather_api_key','weather_lat','weather_lon']; const data = {}; fields.forEach(f => { const el = document.getElementById(f); if (el) data[f] = el.value; }); try { const r = await fetch('/api/settings', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); if (r.ok) showToast('Guardado', 'success'); } catch (e) { showToast('Error', 'error'); } }
 
-    function renderScheduleList() { const c = document.getElementById('schedule-list'); if (!scheduleItems.length) { c.innerHTML = '<div class="empty-state">No hay horarios</div>'; return; } c.innerHTML = scheduleItems.map(i => `<div class="item-row"><div class="item-icon">${icons[i.icon]||icons.default}</div><div class="item-name">${i.name_es}</div><div class="item-detail">${i.name_en||''}</div><div class="item-detail">${i.time_end?i.time_start+' – '+i.time_end:i.time_start}</div><div class="item-actions"><button class="btn btn-secondary btn-small" onclick="editScheduleItem(${i.id})">✏️</button><button class="btn btn-danger btn-small" onclick="deleteScheduleItem(${i.id})">🗑️</button></div></div>`).join(''); }
+    function renderScheduleList() { const c = document.getElementById('schedule-list'); if (!scheduleItems.length) { c.innerHTML = '<div class="empty-state">No hay horarios</div>'; return; } c.innerHTML = scheduleItems.map(i => { const closedBadge = i.is_closed ? '<span class="closed-badge">CERRADO</span>' : ''; return `<div class="item-row"><div class="item-icon">${icons[i.icon]||icons.default}</div><div class="item-name">${i.name_es}${closedBadge}</div><div class="item-detail">${i.name_en||''}</div><div class="item-detail">${i.time_end?i.time_start+' – '+i.time_end:i.time_start}</div><div class="item-actions"><button class="btn btn-secondary btn-small" onclick="editScheduleItem(${i.id})">✏️</button><button class="btn btn-danger btn-small" onclick="deleteScheduleItem(${i.id})">🗑️</button></div></div>`; }).join(''); }
     function renderServicesList() { const c = document.getElementById('services-list'); if (!serviceItems.length) { c.innerHTML = '<div class="empty-state">No hay servicios</div>'; return; } c.innerHTML = serviceItems.map(i => `<div class="item-row"><div class="item-icon">${icons[i.icon]||icons.default}</div><div class="item-name">${i.name_es}</div><div class="item-detail">${i.name_en||''}</div><div class="item-detail">${(i.description_es||'').substring(0,20)}...</div><div class="item-actions"><button class="btn btn-secondary btn-small" onclick="editServiceItem(${i.id})">✏️</button><button class="btn btn-danger btn-small" onclick="deleteServiceItem(${i.id})">🗑️</button></div></div>`).join(''); }
 
-    function openScheduleModal(item=null) { document.getElementById('schedule-modal').classList.add('active'); document.getElementById('schedule-modal-title').textContent = item ? 'Editar Horario' : 'Añadir Horario'; document.getElementById('schedule-edit-id').value = item?.id||''; document.getElementById('schedule-name-es').value = item?.name_es||''; document.getElementById('schedule-name-en').value = item?.name_en||''; document.getElementById('schedule-name-de').value = item?.name_de||''; document.getElementById('schedule-time-start').value = item?.time_start||''; document.getElementById('schedule-time-end').value = item?.time_end||''; document.getElementById('schedule-order').value = item?.display_order||0; document.getElementById('schedule-icon').value = item?.icon||'coffee'; selectIcon('schedule-icon-selector', item?.icon||'coffee'); }
-    function closeScheduleModal() { document.getElementById('schedule-modal').classList.remove('active'); }
+    function openScheduleModal(item=null) {
+      document.getElementById('schedule-modal').classList.add('active');
+      document.getElementById('schedule-modal-title').textContent = item ? 'Editar Horario' : 'Añadir Horario';
+      document.getElementById('schedule-edit-id').value = item?.id||'';
+      document.getElementById('schedule-name-es').value = item?.name_es||'';
+      document.getElementById('schedule-name-en').value = item?.name_en||'';
+      document.getElementById('schedule-name-de').value = item?.name_de||'';
+      document.getElementById('schedule-time-start').value = item?.time_start||'';
+      document.getElementById('schedule-time-end').value = item?.time_end||'';
+      document.getElementById('schedule-order').value = item?.display_order||0;
+      document.getElementById('schedule-icon').value = item?.icon||'coffee';
+      selectIcon('schedule-icon-selector', item?.icon||'coffee');
+      // Image
+      document.getElementById('schedule-image-path').value = item?.image||'';
+      const preview = document.getElementById('schedule-image-preview');
+      const removeBtn = document.getElementById('schedule-image-remove');
+      if (item?.image) { preview.src = item.image; preview.classList.add('has-image'); removeBtn.classList.add('has-image'); }
+      else { preview.src = ''; preview.classList.remove('has-image'); removeBtn.classList.remove('has-image'); }
+      // Closed status
+      document.getElementById('schedule-is-closed').checked = item?.is_closed || false;
+      document.getElementById('schedule-closed-from').value = item?.closed_from || '';
+      document.getElementById('schedule-closed-to').value = item?.closed_to || '';
+      toggleClosedDates();
+    }
+    function closeScheduleModal() { document.getElementById('schedule-modal').classList.remove('active'); document.getElementById('schedule-image-input').value = ''; }
     function editScheduleItem(id) { const item = scheduleItems.find(i => i.id === id); if (item) openScheduleModal(item); }
-    async function saveScheduleItem() { const id = document.getElementById('schedule-edit-id').value; const data = { name_es: document.getElementById('schedule-name-es').value, name_en: document.getElementById('schedule-name-en').value, name_de: document.getElementById('schedule-name-de').value, time_start: document.getElementById('schedule-time-start').value, time_end: document.getElementById('schedule-time-end').value, icon: document.getElementById('schedule-icon').value, display_order: parseInt(document.getElementById('schedule-order').value)||0, active: 1 }; try { const r = await fetch(id ? `/api/schedule/${id}` : '/api/schedule', { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); if (r.ok) { closeScheduleModal(); await loadSchedule(); showToast('Guardado', 'success'); } } catch (e) { showToast('Error', 'error'); } }
+    async function saveScheduleItem() {
+      const id = document.getElementById('schedule-edit-id').value;
+      const data = {
+        name_es: document.getElementById('schedule-name-es').value,
+        name_en: document.getElementById('schedule-name-en').value,
+        name_de: document.getElementById('schedule-name-de').value,
+        time_start: document.getElementById('schedule-time-start').value,
+        time_end: document.getElementById('schedule-time-end').value,
+        icon: document.getElementById('schedule-icon').value,
+        image: document.getElementById('schedule-image-path').value || null,
+        is_closed: document.getElementById('schedule-is-closed').checked ? 1 : 0,
+        closed_from: document.getElementById('schedule-closed-from').value || null,
+        closed_to: document.getElementById('schedule-closed-to').value || null,
+        display_order: parseInt(document.getElementById('schedule-order').value)||0,
+        active: 1
+      };
+      try {
+        const r = await fetch(id ? `/api/schedule/${id}` : '/api/schedule', { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        if (r.ok) { closeScheduleModal(); await loadSchedule(); showToast('Guardado', 'success'); }
+      } catch (e) { showToast('Error', 'error'); }
+    }
     async function deleteScheduleItem(id) { if (!confirm('¿Eliminar?')) return; try { await fetch(`/api/schedule/${id}`, { method: 'DELETE' }); await loadSchedule(); showToast('Eliminado', 'success'); } catch (e) {} }
 
-    function openServiceModal(item=null) { document.getElementById('service-modal').classList.add('active'); document.getElementById('service-modal-title').textContent = item ? 'Editar Servicio' : 'Añadir Servicio'; document.getElementById('service-edit-id').value = item?.id||''; document.getElementById('service-name-es').value = item?.name_es||''; document.getElementById('service-name-en').value = item?.name_en||''; document.getElementById('service-name-de').value = item?.name_de||''; document.getElementById('service-desc-es').value = item?.description_es||''; document.getElementById('service-desc-en').value = item?.description_en||''; document.getElementById('service-desc-de').value = item?.description_de||''; document.getElementById('service-order').value = item?.display_order||0; document.getElementById('service-icon').value = item?.icon||'waves'; selectIcon('service-icon-selector', item?.icon||'waves'); }
-    function closeServiceModal() { document.getElementById('service-modal').classList.remove('active'); }
+    function openServiceModal(item=null) {
+      document.getElementById('service-modal').classList.add('active');
+      document.getElementById('service-modal-title').textContent = item ? 'Editar Servicio' : 'Añadir Servicio';
+      document.getElementById('service-edit-id').value = item?.id||'';
+      document.getElementById('service-name-es').value = item?.name_es||'';
+      document.getElementById('service-name-en').value = item?.name_en||'';
+      document.getElementById('service-name-de').value = item?.name_de||'';
+      document.getElementById('service-desc-es').value = item?.description_es||'';
+      document.getElementById('service-desc-en').value = item?.description_en||'';
+      document.getElementById('service-desc-de').value = item?.description_de||'';
+      document.getElementById('service-order').value = item?.display_order||0;
+      document.getElementById('service-icon').value = item?.icon||'waves';
+      selectIcon('service-icon-selector', item?.icon||'waves');
+      // Image
+      document.getElementById('service-image-path').value = item?.image||'';
+      const preview = document.getElementById('service-image-preview');
+      const removeBtn = document.getElementById('service-image-remove');
+      if (item?.image) { preview.src = item.image; preview.classList.add('has-image'); removeBtn.classList.add('has-image'); }
+      else { preview.src = ''; preview.classList.remove('has-image'); removeBtn.classList.remove('has-image'); }
+    }
+    function closeServiceModal() { document.getElementById('service-modal').classList.remove('active'); document.getElementById('service-image-input').value = ''; }
     function editServiceItem(id) { const item = serviceItems.find(i => i.id === id); if (item) openServiceModal(item); }
-    async function saveServiceItem() { const id = document.getElementById('service-edit-id').value; const data = { name_es: document.getElementById('service-name-es').value, name_en: document.getElementById('service-name-en').value, name_de: document.getElementById('service-name-de').value, description_es: document.getElementById('service-desc-es').value, description_en: document.getElementById('service-desc-en').value, description_de: document.getElementById('service-desc-de').value, icon: document.getElementById('service-icon').value, display_order: parseInt(document.getElementById('service-order').value)||0, active: 1 }; try { const r = await fetch(id ? `/api/services/${id}` : '/api/services', { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }); if (r.ok) { closeServiceModal(); await loadServices(); showToast('Guardado', 'success'); } } catch (e) { showToast('Error', 'error'); } }
+    async function saveServiceItem() {
+      const id = document.getElementById('service-edit-id').value;
+      const data = {
+        name_es: document.getElementById('service-name-es').value,
+        name_en: document.getElementById('service-name-en').value,
+        name_de: document.getElementById('service-name-de').value,
+        description_es: document.getElementById('service-desc-es').value,
+        description_en: document.getElementById('service-desc-en').value,
+        description_de: document.getElementById('service-desc-de').value,
+        icon: document.getElementById('service-icon').value,
+        image: document.getElementById('service-image-path').value || null,
+        display_order: parseInt(document.getElementById('service-order').value)||0,
+        active: 1
+      };
+      try {
+        const r = await fetch(id ? `/api/services/${id}` : '/api/services', { method: id ? 'PUT' : 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        if (r.ok) { closeServiceModal(); await loadServices(); showToast('Guardado', 'success'); }
+      } catch (e) { showToast('Error', 'error'); }
+    }
     async function deleteServiceItem(id) { if (!confirm('¿Eliminar?')) return; try { await fetch(`/api/services/${id}`, { method: 'DELETE' }); await loadServices(); showToast('Eliminado', 'success'); } catch (e) {} }
 
     function setupTabs() { document.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', () => { document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); tab.classList.add('active'); document.getElementById(`section-${tab.dataset.tab}`).classList.add('active'); }); }); }
     function setupIconSelectors() { document.querySelectorAll('.icon-selector').forEach(sel => { sel.querySelectorAll('.icon-option').forEach(opt => { opt.addEventListener('click', () => { sel.querySelectorAll('.icon-option').forEach(o => o.classList.remove('selected')); opt.classList.add('selected'); document.getElementById(sel.id.replace('-selector', '')).value = opt.dataset.icon; }); }); }); }
     function selectIcon(selId, icon) { document.getElementById(selId).querySelectorAll('.icon-option').forEach(o => o.classList.toggle('selected', o.dataset.icon === icon)); }
     function showToast(msg, type='info') { const t = document.getElementById('toast'); t.textContent = msg; t.className = `toast ${type} show`; setTimeout(() => t.classList.remove('show'), 3000); }
+
+    // Image upload handling
+    async function handleImageUpload(input, type) {
+      const file = input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const base64 = e.target.result;
+        try {
+          showToast('Subiendo imagen...', 'info');
+          const res = await fetch('/api/upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: base64, filename: file.name })
+          });
+          const data = await res.json();
+          if (data.path) {
+            document.getElementById(`${type}-image-path`).value = data.path;
+            const preview = document.getElementById(`${type}-image-preview`);
+            preview.src = data.path;
+            preview.classList.add('has-image');
+            document.getElementById(`${type}-image-remove`).classList.add('has-image');
+            showToast('Imagen subida', 'success');
+          }
+        } catch (err) { showToast('Error al subir', 'error'); }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function removeImage(type) {
+      document.getElementById(`${type}-image-path`).value = '';
+      document.getElementById(`${type}-image-preview`).src = '';
+      document.getElementById(`${type}-image-preview`).classList.remove('has-image');
+      document.getElementById(`${type}-image-remove`).classList.remove('has-image');
+      document.getElementById(`${type}-image-input`).value = '';
+    }
+
+    function toggleClosedDates() {
+      const checkbox = document.getElementById('schedule-is-closed');
+      const range = document.getElementById('schedule-closed-range');
+      if (checkbox.checked) { range.classList.add('visible'); }
+      else { range.classList.remove('visible'); }
+    }
 
     init();
   </script>
