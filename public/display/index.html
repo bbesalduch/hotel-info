@@ -468,6 +468,42 @@
       letter-spacing: 2px;
     }
 
+    .footer-wifi {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      padding: 8px 20px;
+      background: var(--warm-white);
+      border: 1px solid var(--sand);
+    }
+
+    .footer-wifi svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--gold);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .footer-wifi-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-wifi-label {
+      font-size: 9px;
+      color: var(--gray-light);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .footer-wifi-value {
+      font-size: 11px;
+      color: var(--charcoal);
+      letter-spacing: 1px;
+    }
+
     /* Animations */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(20px); }
@@ -634,6 +670,7 @@
 
     <footer class="footer">
       <div class="indicators" id="indicators"></div>
+      <div class="footer-wifi" id="footer-wifi"></div>
       <div class="footer-info">
         <span>Palma de Mallorca</span>
         <span id="phone">+34 871 626 000</span>
@@ -841,13 +878,18 @@
             <p class="welcome-label">${labels[currentLang].boutique}</p>
             <h1 class="welcome-title">${data?.settings?.[`welcome_message_${currentLang}`] || labels[currentLang].welcome}</h1>
             <div class="divider"></div>
-            <div class="wifi-box video-wifi">
-              <div class="wifi-item"><p class="wifi-label">${labels[currentLang].network}</p><p class="wifi-value">${data?.settings?.wifi_network || 'Hotel Can Quetglas'}</p></div>
-              <div class="wifi-item"><p class="wifi-label">${labels[currentLang].password}</p><p class="wifi-value">${data?.settings?.wifi_password || '--------'}</p></div>
-            </div>
+            <p class="discover-text">Palma de Mallorca</p>
           </div>
         </div>
       </div>`;
+
+      // Update footer WiFi
+      const wifiIcon = '<svg viewBox="0 0 24 24"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><circle cx="12" cy="20" r="1"/></svg>';
+      document.getElementById('footer-wifi').innerHTML = `
+        ${wifiIcon}
+        <div class="footer-wifi-item"><span class="footer-wifi-label">${labels[currentLang].network}</span><span class="footer-wifi-value">${data?.settings?.wifi_network || 'Hotel Can Quetglas'}</span></div>
+        <div class="footer-wifi-item"><span class="footer-wifi-label">${labels[currentLang].password}</span><span class="footer-wifi-value">${data?.settings?.wifi_password || '--------'}</span></div>
+      `;
 
       // Schedule with images
       let scheduleHTML = (data?.schedule || []).map(i => {
