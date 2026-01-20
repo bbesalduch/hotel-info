@@ -426,13 +426,13 @@
       pointer-events: none;
     }
 
-    .video-container iframe {
+    .video-container video {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      border: none;
+      object-fit: cover;
     }
 
     .video-overlay {
@@ -586,11 +586,9 @@
       container.innerHTML += `<div class="slide active">
         <div class="video-hero">
           <div class="video-container">
-            <iframe
-              src="https://www.youtube.com/embed/5t7cmvc9xU0?autoplay=1&mute=1&loop=1&playlist=5t7cmvc9xU0&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1&origin=${window.location.origin}"
-              allow="autoplay; encrypted-media"
-              allowfullscreen>
-            </iframe>
+            <video autoplay muted loop playsinline>
+              <source src="/videos/mallorca.mp4" type="video/mp4">
+            </video>
           </div>
           <div class="video-overlay">
             <p class="welcome-label">${videoLabels[currentLang].discover}</p>
