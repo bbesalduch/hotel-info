@@ -933,16 +933,20 @@
         </div>
       `).join('');
 
+      const hotelAddress = data?.settings?.hotel_address || 'Palma de Mallorca';
       let weatherHTML = weather?.main ? `<div class="weather-content">
         <div class="weather-today">
           <div class="weather-icon">${weatherSvgIcons[weather.weather?.[0]?.icon] || weatherSvgIcons.default}</div>
           <div class="weather-temp">${Math.round(weather.main.temp)}<span>°C</span></div>
           <div class="weather-desc">${weather.weather?.[0]?.description || ''}</div>
-          <div class="weather-location">Palma de Mallorca</div>
+          <div class="weather-location">${hotelAddress}</div>
         </div>
         <div class="weather-forecast">${forecastHTML}</div>
-      </div>` : `<div class="weather-content"><div class="weather-today"><div class="weather-icon">${weatherSvgIcons.default}</div><div class="weather-temp">--<span>°C</span></div><div class="weather-desc">Configura API Key en Admin</div><div class="weather-location">Palma de Mallorca</div></div></div>`;
-      container.innerHTML += `<div class="slide"><div class="slide-inner"><p class="section-label">Palma de Mallorca</p><h2 class="section-title">${labels[currentLang].weather}</h2>${weatherHTML}</div></div>`;
+      </div>` : `<div class="weather-content"><div class="weather-today"><div class="weather-icon">${weatherSvgIcons.default}</div><div class="weather-temp">--<span>°C</span></div><div class="weather-desc">Configura API Key en Admin</div><div class="weather-location">${hotelAddress}</div></div></div>`;
+      container.innerHTML += `<div class="slide"><div class="slide-inner"><p class="section-label">${hotelAddress}</p><h2 class="section-title">${labels[currentLang].weather}</h2>${weatherHTML}</div></div>`;
+
+      // Update footer address
+      document.querySelector('.footer-info span:first-child').textContent = hotelAddress;
 
       for (let i = 0; i < 5; i++) { const d = document.createElement('div'); d.className = `indicator${i === 0 ? ' active' : ''}`; d.onclick = () => goToSlide(i); ind.appendChild(d); }
       document.querySelector(`.lang-pill[data-lang="${currentLang}"]`)?.classList.add('active');
@@ -954,13 +958,13 @@
       currentSlide = i;
     }
 
-    function changeLang(lang) {
+    async function changeLang(lang) {
       currentLang = lang;
       document.querySelectorAll('.lang-pill').forEach(p => p.classList.toggle('active', p.dataset.lang === lang));
       const idx = currentSlide;
+      await loadWeather();
       render();
       goToSlide(idx);
-      loadWeather();
     }
 
     function startClock() {
