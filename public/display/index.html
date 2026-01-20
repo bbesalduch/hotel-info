@@ -565,6 +565,21 @@
       margin-top: 30px;
     }
 
+    .video-wifi {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .video-wifi .wifi-label {
+      color: var(--gray);
+    }
+
+    .video-wifi .wifi-value {
+      color: var(--charcoal);
+    }
+
     /* Loading */
     .loading {
       position: fixed;
@@ -814,16 +829,25 @@
         </div>
       </div>`;
 
-      // Welcome
-      container.innerHTML += `<div class="slide"><div class="slide-inner">
-        <p class="welcome-label">${labels[currentLang].boutique}</p>
-        <h1 class="welcome-title">${data?.settings?.[`welcome_message_${currentLang}`] || labels[currentLang].welcome}</h1>
-        <div class="divider"></div>
-        <div class="wifi-box">
-          <div class="wifi-item"><p class="wifi-label">${labels[currentLang].network}</p><p class="wifi-value">${data?.settings?.wifi_network || 'Hotel Can Quetglas'}</p></div>
-          <div class="wifi-item"><p class="wifi-label">${labels[currentLang].password}</p><p class="wifi-value">${data?.settings?.wifi_password || '--------'}</p></div>
+      // Welcome with Bellver video background
+      container.innerHTML += `<div class="slide">
+        <div class="video-hero">
+          <div class="video-container">
+            <video autoplay muted loop playsinline>
+              <source src="/videos/bellver.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="video-overlay">
+            <p class="welcome-label">${labels[currentLang].boutique}</p>
+            <h1 class="welcome-title">${data?.settings?.[`welcome_message_${currentLang}`] || labels[currentLang].welcome}</h1>
+            <div class="divider"></div>
+            <div class="wifi-box video-wifi">
+              <div class="wifi-item"><p class="wifi-label">${labels[currentLang].network}</p><p class="wifi-value">${data?.settings?.wifi_network || 'Hotel Can Quetglas'}</p></div>
+              <div class="wifi-item"><p class="wifi-label">${labels[currentLang].password}</p><p class="wifi-value">${data?.settings?.wifi_password || '--------'}</p></div>
+            </div>
+          </div>
         </div>
-      </div></div>`;
+      </div>`;
 
       // Schedule with images
       let scheduleHTML = (data?.schedule || []).map(i => {
